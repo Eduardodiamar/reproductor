@@ -115,6 +115,8 @@ function playTrack() {
     isPlaying = true;
     // Replace icon with the pause icon
     playpause_btn.innerHTML = '<i class="fa fa-pause-circle fa-5x"></i>';
+setInterval(randomRGBColor,416.6666666)
+
     startCanvasVideo()
 }
 function pauseTrack() {
