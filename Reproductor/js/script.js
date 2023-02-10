@@ -21,25 +21,25 @@ let curr_track = document.createElement('audio');
 let track_list = [{
     name: "Paro Hour",
     artist: "Luciid",
-    image: "/images/parohour.jpg",
+    image: "./images/parohour.jpg",
     path: "music/Luciid-Paro_Hour.mp3"
 },
 {
     name: "Lumina",
     artist: "Exodia",
-    image: "/images/exodia.jpg",
+    image: "./images/exodia.jpg",
     path: "music/Lumina[DY-006].mp3"
 },
 {
     name: "Crust",
     artist: "Flying Lotus",
-    image: "/images/flyinglotus.png",
+    image: "./images/flyinglotus.png",
     path: "music/Crust.mp3",
 },
 {
     name: "Blood Sugar",
     artist: "Pendulum",
-    image: "/images/pendulum.jpg",
+    image: "./images/pendulum.jpg",
     path: "music/BloodSugar.mp3",
 }];
 let randomColor;
@@ -49,6 +49,7 @@ loadTrack(track_index)
 
 function loadTrack(track_index) {
     // Clear the previous seek timer
+
     clearInterval(updateTimer);
     resetValues();
     // Load a new track
@@ -89,14 +90,13 @@ function randomRGBColor() {
     const red = Math.floor(Math.random() * 256);
     const green = Math.floor(Math.random() * 256);
     const blue = Math.floor(Math.random() * 256);
-  
+
     const colors = [red, green, blue];
     colors[Math.floor(Math.random() * 3)] = 255;
-  
+
     randomColor = "rgb(" + colors[0] + "," + colors[1] + "," + colors[2] + ")";
     document.querySelector('.player').style.boxShadow = `0 4px 30px ${randomColor}`;
-
-  }
+}
 // Function to reset all values to their default
 function resetValues() {
     curr_time.textContent = "00:00";
@@ -131,6 +131,8 @@ function nextTrack() {
         track_index += 1;
     else track_index = 0;
     // Load and play the new track
+    delCanvas()
+
     loadTrack(track_index);
     playTrack();
 }
@@ -152,78 +154,82 @@ function seekTo() {
     seekto = curr_track.duration * (seek_slider.value / 100);
     // Set the current track position to the calculated seek position
     curr_track.currentTime = seekto;
-    }
-    function setVolume() {
+}
+function setVolume() {
     // Set the volume according to the
     // percentage of the volume slider set
     curr_track.volume = volume_slider.value / 100;
-    }
-    function seekUpdate() {
+}
+function seekUpdate() {
     let seekPosition = 0;
     // Check if the current track duration is a legible number
     if (!isNaN(curr_track.duration)) {
-    seekPosition = curr_track.currentTime * (100 / curr_track.duration);
-    seek_slider.value = seekPosition;
-    // Calculate the time left and the total duration
-    let currentMinutes = Math.floor(curr_track.currentTime / 60);
-    let currentSeconds = Math.floor(curr_track.currentTime - currentMinutes * 60);
-    let durationMinutes = Math.floor(curr_track.duration / 60);
-    let durationSeconds = Math.floor(curr_track.duration - durationMinutes * 60);
-    // Add a zero to the single digit time values
-    if (currentSeconds < 10) {
-    currentSeconds = "0" + currentSeconds;
-    }
-    if (durationSeconds < 10) {
-    durationSeconds = "0" + durationSeconds;
-    }
-    if (currentMinutes < 10) {
-    currentMinutes = "0" + currentMinutes;
-    }
-    if (durationMinutes < 10) {
-    durationMinutes = "0" + durationMinutes;
-    }
-    // Display the updated duration
-    curr_time.textContent = currentMinutes + ":" + currentSeconds;
-    total_duration.textContent = durationMinutes + ":" + durationSeconds;
-    }
-    }
-
-    //SPECTRUM
-    function startCanvasVideo() {
-        const canvas = document.getElementById("spectrum");
-        const ctx = canvas.getContext("2d");
-        const audio = curr_track;
-    
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const analyser = audioContext.createAnalyser();
-        const source = audioContext.createMediaElementSource(audio);
-        source.connect(analyser);
-        analyser.connect(audioContext.destination);
-    
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-    
-        function renderFrame() {
-            requestAnimationFrame(renderFrame);
-            analyser.getByteFrequencyData(dataArray);
-    
-            ctx.fillStyle = "rgba(31, 31, 31, 0.09)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-            const barWidth = (canvas.width / bufferLength) * 2.5;
-            let barHeight;
-            let x = 0;
-    
-            for (let i = 0; i < bufferLength; i++) {
-                barHeight = dataArray[i];
-    
-                ctx.fillStyle = randomColor
-
-                ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
-    
-                x += barWidth + 1;
-            }
+        seekPosition = curr_track.currentTime * (100 / curr_track.duration);
+        seek_slider.value = seekPosition;
+        // Calculate the time left and the total duration
+        let currentMinutes = Math.floor(curr_track.currentTime / 60);
+        let currentSeconds = Math.floor(curr_track.currentTime - currentMinutes * 60);
+        let durationMinutes = Math.floor(curr_track.duration / 60);
+        let durationSeconds = Math.floor(curr_track.duration - durationMinutes * 60);
+        // Add a zero to the single digit time values
+        if (currentSeconds < 10) {
+            currentSeconds = "0" + currentSeconds;
         }
-    
-        audio.addEventListener("play", renderFrame);
+        if (durationSeconds < 10) {
+            durationSeconds = "0" + durationSeconds;
+        }
+        if (currentMinutes < 10) {
+            currentMinutes = "0" + currentMinutes;
+        }
+        if (durationMinutes < 10) {
+            durationMinutes = "0" + durationMinutes;
+        }
+        // Display the updated duration
+        curr_time.textContent = currentMinutes + ":" + currentSeconds;
+        total_duration.textContent = durationMinutes + ":" + durationSeconds;
     }
+}
+
+//CANVAS
+const canvas = document.getElementById("spectrum");
+const ctx = canvas.getContext("2d");
+//SPECTRUM
+function startCanvasVideo() {
+
+    const audio = curr_track;
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = audioContext.createAnalyser();
+    const source = audioContext.createMediaElementSource(audio);
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    function renderFrame() {
+        requestAnimationFrame(renderFrame);
+        analyser.getByteFrequencyData(dataArray);
+
+        ctx.fillStyle = "rgba(31, 31, 31, 0.09)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const barWidth = (canvas.width / bufferLength) * 2.5;
+        let barHeight;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+            barHeight = dataArray[i];
+
+            ctx.fillStyle = randomColor
+
+            ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
+
+            x += barWidth + 1;
+        }
+    }
+
+    audio.addEventListener("play", renderFrame);
+}
+function delCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
