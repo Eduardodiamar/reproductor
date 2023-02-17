@@ -17,30 +17,41 @@ let isPlaying = false;
 let updateTimer;
 // Create the audio element for the player
 let curr_track = document.createElement('audio');
+let curr_bpm
+let randomColors;
 // Define the list of tracks that have to be played
 let track_list = [{
     name: "Paro Hour",
     artist: "Luciid",
     image: "./images/parohour.jpg",
-    path: "music/Luciid-Paro_Hour.mp3"
+    path: "music/Luciid-Paro_Hour.mp3",
+    bpm: 400 
 },
 {
     name: "Lumina",
     artist: "Exodia",
     image: "./images/exodia.jpg",
-    path: "music/Lumina[DY-006].mp3"
+    path: "music/Lumina[DY-006].mp3",
+    bpm: 343 
+
 },
+
 {
     name: "Crust",
     artist: "Flying Lotus",
     image: "./images/flyinglotus.png",
     path: "music/Crust.mp3",
+    bpm: 561 
+
+
 },
 {
     name: "Blood Sugar",
     artist: "Pendulum",
     image: "./images/pendulum.jpg",
     path: "music/BloodSugar.mp3",
+    bpm: 371 
+
 }];
 let randomColor;
 loadTrack(track_index)
@@ -56,7 +67,7 @@ function loadTrack(track_index) {
     curr_track.src = track_list[track_index].path;
     curr_track.load();
     // Update details of the track
-
+    curr_bpm = track_list[track_index].bpm;
     track_art.style.backgroundImage =
         "url(" + track_list[track_index].image + ")";
     track_name.textContent = track_list[track_index].name;
@@ -102,6 +113,9 @@ function resetValues() {
     curr_time.textContent = "00:00";
     total_duration.textContent = "00:00";
     seek_slider.value = 0;
+    
+    clearInterval(randomColors)
+
 }
 function playpauseTrack() {
     // Switch between playing and pausing
@@ -115,7 +129,7 @@ function playTrack() {
     isPlaying = true;
     // Replace icon with the pause icon
     playpause_btn.innerHTML = '<i class="fa fa-pause-circle fa-5x"></i>';
-setInterval(randomRGBColor,416.6666666)
+    randomColors = setInterval(randomRGBColor,curr_bpm)
 
     startCanvasVideo()
 }
@@ -127,6 +141,7 @@ function pauseTrack() {
     playpause_btn.innerHTML = '<i class="fa fa-play-circle fa-5x"></i>';
 }
 function nextTrack() {
+
     // Go back to the first track if the
     // current one is the last in the track list
     if (track_index < track_list.length - 1)
@@ -139,6 +154,7 @@ function nextTrack() {
     playTrack();
 }
 function prevTrack() {
+
     // Go back to the last track if the
     // current one is the first in the track list
     if (track_index > 0)
@@ -234,4 +250,17 @@ function startCanvasVideo() {
 }
 function delCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function testClick(){
+    track_list.forEach((track, index) =>{
+        let trackElement = document.createElement('ul');
+        trackElement.innerHTML= `<div class="trackList"><h3>${track.name} - ${track.artist} </h3></div>`;
+        trackElement.addEventListener("click", () => {
+            track_index = index;
+            loadTrack(track_index);
+            playTrack();
+    });
+    trackListElement.appendChild(trackElement);
+});
 }

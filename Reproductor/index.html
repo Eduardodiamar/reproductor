@@ -22,6 +22,16 @@
             <!-- Define the section for displaying details -->
             <section class="details">
                 <div class="now-playing">PLAYING x OF y</div>
+                <p>
+                    <button class="btn btn-primary" type="button" onclick="testClick()" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="fa fa-solid fa-list-ul"></i>
+                    </button>
+                  </p>
+                  <div class="collapse" id="collapseExample" data-bs-parent="#accordion">
+                    <div id="trackListElement">
+                     
+                    </div>
+                  </div>
                 <div class="track-art"></div>
                 <div class="track-name">Track Name</div>
                 <div class="track-artist">Track Artist</div>

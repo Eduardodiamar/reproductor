@@ -157,3 +157,12 @@ i.fa-step-backward {
 canvas {
     width: 66%;
 }
+
+  .trackList{
+    text-align: center;
+    overflow: hidden;
+    color: turquoise;
+    background-color: rgb(29, 24, 24);
+    border: solid 1px black;
+    cursor: pointer;
+  }
