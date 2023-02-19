@@ -25,14 +25,14 @@ let track_list = [{
     artist: "Luciid",
     image: "./images/parohour.jpg",
     path: "music/Luciid-Paro_Hour.mp3",
-    bpm: 400 
+    bpm: 400
 },
 {
     name: "Lumina",
     artist: "Exodia",
     image: "./images/exodia.jpg",
     path: "music/Lumina[DY-006].mp3",
-    bpm: 343 
+    bpm: 343
 
 },
 
@@ -41,7 +41,7 @@ let track_list = [{
     artist: "Flying Lotus",
     image: "./images/flyinglotus.png",
     path: "music/Crust.mp3",
-    bpm: 561 
+    bpm: 561
 
 
 },
@@ -50,7 +50,7 @@ let track_list = [{
     artist: "Pendulum",
     image: "./images/pendulum.jpg",
     path: "music/BloodSugar.mp3",
-    bpm: 371 
+    bpm: 371
 
 }];
 let randomColor;
@@ -113,7 +113,7 @@ function resetValues() {
     curr_time.textContent = "00:00";
     total_duration.textContent = "00:00";
     seek_slider.value = 0;
-    
+
     clearInterval(randomColors)
 
 }
@@ -129,11 +129,12 @@ function playTrack() {
     isPlaying = true;
     // Replace icon with the pause icon
     playpause_btn.innerHTML = '<i class="fa fa-pause-circle fa-5x"></i>';
-    randomColors = setInterval(randomRGBColor,curr_bpm)
+    randomColors = setInterval(randomRGBColor, curr_bpm)
 
     startCanvasVideo()
 }
 function pauseTrack() {
+    clearInterval(randomColors)
     // Pause the loaded track
     curr_track.pause();
     isPlaying = false;
@@ -228,7 +229,7 @@ function startCanvasVideo() {
         requestAnimationFrame(renderFrame);
         analyser.getByteFrequencyData(dataArray);
 
-        ctx.fillStyle = "rgba(31, 31, 31, 0.09)";
+        ctx.fillStyle = "rgb(29, 24, 24, 1)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         const barWidth = (canvas.width / bufferLength) * 2.5;
@@ -251,16 +252,31 @@ function startCanvasVideo() {
 function delCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+let isPlaylistCreated = false
+function testClick() {
+    if (!isPlaylistCreated) {
+        track_list.forEach((track, index) => {
 
-function testClick(){
-    track_list.forEach((track, index) =>{
-        let trackElement = document.createElement('ul');
-        trackElement.innerHTML= `<div class="trackList"><h3>${track.name} - ${track.artist} </h3></div>`;
-        trackElement.addEventListener("click", () => {
-            track_index = index;
-            loadTrack(track_index);
-            playTrack();
-    });
-    trackListElement.appendChild(trackElement);
-});
+            let trackElement = document.createElement('ul');
+            trackElement.innerHTML = `<div class="trackList" ><h3 data-bs-dismiss="modal">${track.name} - ${track.artist} </h3></div>`;
+            isPlaylistCreated = true
+            trackElement.addEventListener("click", () => {
+                track_index = index;
+                loadTrack(track_index);
+                playTrack();
+            });
+            trackListElement.appendChild(trackElement);
+
+        });
+    }
 }
+
+
+function playRandom() {
+    let new_track_index = track_index;
+    while (new_track_index === track_index) {
+      new_track_index = Math.floor(Math.random() * track_list.length);
+    }
+    loadTrack(new_track_index);
+    playTrack();
+  }

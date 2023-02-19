@@ -1,22 +1,21 @@
 body {
     color: wheat;
     /* Smoothly transition the background color */
-    transition: background-color .5s;
-    background: rgba(255, 255, 255, 0.09);
+
     background-color: rgb(29, 24, 24);
 
 }
-
-/* Using flex with the column direction to
-    align items in a vertical direction */
 .player {
     height: 95vh;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-}
+    margin-top: 25px;
+    border-radius: 1em;
+    
 
+}
 .details {
     display: flex;
     align-items: center;
@@ -27,25 +26,23 @@ body {
 
 .track-art {
     margin: 25px;
-    height: 250px;
-    width: 250px;
+    height: 15vw;
+    width: 15vw;
     background-image: URL("https://source.unsplash.com/Qrspubmx6kE/640x360");
     background-size: cover;
     background-position: center;
     border-radius: 15%;
 }
 
-/* Changing the font sizes to suitable ones */
-.now-playing {
-    font-size: 1rem;
+.now-playing {font-size: 1rem;
 }
 
 .track-name {
-    font-size: 3rem;
+    font-size: 3vw;
 }
 
 .track-artist {
-    font-size: 1.5rem;
+    font-size: 1.5vw;
 }
 
 /* Using flex with the row direction to
@@ -140,29 +137,26 @@ i.fa-step-backward {
     cursor: pointer;
 }
 
-.player {
-    margin-top: 20px;
-    border-radius: 50px;
-    margin-left: 33%;
-    margin-right: 33%;
-
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgb(255, 40, 40);
-    backdrop-filter: blur(7.7px);
-    -webkit-backdrop-filter: blur(7.7px);
-    background-color: rgb(31, 31, 31);
-
-}
-
 canvas {
     width: 66%;
+    height: 10vh;
 }
-
-  .trackList{
-    text-align: center;
-    overflow: hidden;
-    color: turquoise;
+.btnList{ margin-top: 1em;
     background-color: rgb(29, 24, 24);
-    border: solid 1px black;
-    cursor: pointer;
-  }
+    color:  wheat;
+    border: solid 1px wheat
+}
+.btnRandom{
+    border: solid 1px wheat;
+
+    background-color: rgb(29, 24, 24);
+    color:  wheat;
+}
+.btnRandom:hover{
+    border: solid 1px wheat;
+    background-color: wheat;
+    color:  rgb(29, 24, 24);
+}
+.modal-body, .modal-header, .modal-footer, .modal-content{
+    background-color: rgb(29, 24, 24);
+}
